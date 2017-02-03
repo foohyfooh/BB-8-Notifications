@@ -60,28 +60,31 @@ public class MainActivity extends AppCompatActivity implements BB8CommandService
             @Override
             public void onClick(View view) {
                 if(bb8CommandService != null){
+                    Log.d(TAG, "BB8 Command Service is not Null");
                     bb8CommandService.startForeground(1, new NotificationCompat.Builder(view.getContext())
                             .setSmallIcon(R.mipmap.ic_launcher)
                             .setContentTitle(getText(R.string.app_name))
                             .build());
+                }else{
+                    Log.d(TAG, "BB8 Command Service is Null");
                 }
             }
         });
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            int hasLocationPermission = checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
-            if(hasLocationPermission != PackageManager.PERMISSION_GRANTED) {
-                //Log.e(TAG, "Location permission has not already been granted");
-                List<String> permissions = new ArrayList<>();
-                permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
-                requestPermissions(permissions.toArray(new String[permissions.size()]), REQUEST_CODE_LOCATION_PERMISSION);
-            } else {
-                //Log.d(TAG, "Location permission already granted");
-                doBindService();
-            }
-        }else{
-            doBindService();
-        }
+//        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            int hasLocationPermission = checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
+//            if(hasLocationPermission != PackageManager.PERMISSION_GRANTED) {
+//                //Log.e(TAG, "Location permission has not already been granted");
+//                List<String> permissions = new ArrayList<>();
+//                permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
+//                requestPermissions(permissions.toArray(new String[permissions.size()]), REQUEST_CODE_LOCATION_PERMISSION);
+//            } else {
+//                //Log.d(TAG, "Location permission already granted");
+//                doBindService();
+//            }
+//        }else{
+//            doBindService();
+//        }
     }
 
     private void handleRequirements(){

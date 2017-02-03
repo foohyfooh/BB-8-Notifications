@@ -113,8 +113,7 @@ public class BB8CommandService extends Service implements RobotChangedStateListe
 
     @SuppressLint("NewApi")
     protected void start() {
-        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M
-                || checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M || checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             startDiscovery();
         }
     }
@@ -145,21 +144,24 @@ public class BB8CommandService extends Service implements RobotChangedStateListe
     @Override
     public void handleRobotChangedState(Robot robot, RobotChangedStateListener.RobotChangedStateNotificationType type) {
         Log.d(TAG, "handleRobotChangedState: " + robot.getName() + " State: " + type.name());
+
         switch(type) {
-            case Online:{
+            case Online:
                 if (robot instanceof RobotLE) {
                     ((RobotLE) robot).setDeveloperMode(true);
                 }
 
                 bb8 = new ConvenienceRobot(robot);
                 break;
-            }
-            case Connecting:{
+
+            case Connecting:
+                Log.d(TAG, "State Changed to Connecting");
                 break;
-            }
-            case Connected:{
+
+            case Connected:
+                Log.d(TAG, "State Changed to Connected");
                 break;
-            }
+
         }
         for (CommandListener commandListener : commandListeners) {
             commandListener.handleRobotChangedState(robot, type);
