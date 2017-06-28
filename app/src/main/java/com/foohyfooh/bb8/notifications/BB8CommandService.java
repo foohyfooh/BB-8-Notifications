@@ -24,7 +24,6 @@ import com.orbotix.le.RobotRadioDescriptor;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class BB8CommandService extends Service implements RobotChangedStateListener,
         DiscoveryAgentEventListener, DiscoveryStateChangedListener {
@@ -113,7 +112,8 @@ public class BB8CommandService extends Service implements RobotChangedStateListe
 
     @SuppressLint("NewApi")
     protected void start() {
-        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M || checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M ||
+                checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             startDiscovery();
         }
     }
@@ -153,15 +153,12 @@ public class BB8CommandService extends Service implements RobotChangedStateListe
 
                 bb8 = new ConvenienceRobot(robot);
                 break;
-
             case Connecting:
                 Log.d(TAG, "State Changed to Connecting");
                 break;
-
             case Connected:
                 Log.d(TAG, "State Changed to Connected");
                 break;
-
         }
         for (CommandListener commandListener : commandListeners) {
             commandListener.handleRobotChangedState(robot, type);

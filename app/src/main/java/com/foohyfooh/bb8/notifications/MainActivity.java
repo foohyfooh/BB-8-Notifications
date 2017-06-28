@@ -71,20 +71,20 @@ public class MainActivity extends AppCompatActivity implements BB8CommandService
             }
         });
 
-//        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//            int hasLocationPermission = checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
-//            if(hasLocationPermission != PackageManager.PERMISSION_GRANTED) {
-//                //Log.e(TAG, "Location permission has not already been granted");
-//                List<String> permissions = new ArrayList<>();
-//                permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
-//                requestPermissions(permissions.toArray(new String[permissions.size()]), REQUEST_CODE_LOCATION_PERMISSION);
-//            } else {
-//                //Log.d(TAG, "Location permission already granted");
-//                doBindService();
-//            }
-//        }else{
-//            doBindService();
-//        }
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            int hasLocationPermission = checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
+            if(hasLocationPermission != PackageManager.PERMISSION_GRANTED) {
+                //Log.e(TAG, "Location permission has not already been granted");
+                List<String> permissions = new ArrayList<>();
+                permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
+                requestPermissions(permissions.toArray(new String[permissions.size()]), REQUEST_CODE_LOCATION_PERMISSION);
+            } else {
+                //Log.d(TAG, "Location permission already granted");
+                doBindService();
+            }
+        }else{
+            doBindService();
+        }
     }
 
     private void handleRequirements(){
@@ -139,71 +139,9 @@ public class MainActivity extends AppCompatActivity implements BB8CommandService
         adapter.notifyDataSetChanged(); //Notify of changes since the ConfigureActivity may have disabled an app
     }
 
-    /*
-    private void handleEnablingNotificationListener() {
-        ComponentName cn = new ComponentName(this, NotificationListener.class);
-        String flat = Settings.Secure.getString(getContentResolver(), "enabled_notification_listeners");
-        boolean enabled = flat != null && flat.contains(cn.flattenToString());
-        Log.d(TAG, "Notification Listener Enabled: " + String.valueOf(enabled));
-
-        if(!enabled){
-            new AlertDialog.Builder(this)
-                .setTitle(R.string.notification_access_title)
-                .setMessage(R.string.notification_access_message)
-                .setNegativeButton(R.string.cancel, null)
-                .setPositiveButton(R.string.enable, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        startActivity(new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"));
-                    }
-                })
-                .show();
-        }
-    }
-
-    private void handleEnablingLocation(){
-        // Bluetooth requires location on Marshmallow and higher devices
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-            try {
-                boolean enabled = Settings.Secure.getInt(getContentResolver(), Settings.Secure.LOCATION_MODE) != Settings.Secure.LOCATION_MODE_OFF;
-                Log.d(TAG, "Location Enabled: " + String.valueOf(enabled));
-                if(!enabled){
-                    new AlertDialog.Builder(this)
-                        .setTitle(R.string.location_access_title)
-                        .setMessage(R.string.location_access_message)
-                        .setNegativeButton(R.string.cancel, null)
-                        .setPositiveButton(R.string.enable, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                Intent enableLocationIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                                startActivity(enableLocationIntent);
-                            }
-                        })
-                        .show();
-                }
-            } catch (Settings.SettingNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private void handleEnablingBluetooth(){
-        BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
-        if(adapter == null){
-            Toast.makeText(this, "Bluetooth Not Available", Toast.LENGTH_SHORT).show();
-        }else if(!adapter.isEnabled()){
-            Intent enableBluetoothIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(enableBluetoothIntent, REQUEST_CODE_BLUETOOTH);
-        }
-    }
-    */
-
     @Override
     protected void onStart() {
         super.onStart();
-        //handleEnablingNotificationListener();
-        //handleEnablingLocation();
-        //handleEnablingBluetooth();
         if(bb8CommandService != null) bb8CommandService.start();
     }
 
