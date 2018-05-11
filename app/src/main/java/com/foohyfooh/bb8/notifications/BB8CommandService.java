@@ -64,7 +64,7 @@ public class BB8CommandService extends Service implements RobotChangedStateListe
 
     public void startDiscovery() {
         DiscoveryAgentLE discoveryAgentLE = DiscoveryAgentLE.getInstance();
-        if(!discoveryAgentLE.isDiscovering()) {
+        if(discoveryAgentLE != null && !discoveryAgentLE.isDiscovering()) {
             try {
                 RobotRadioDescriptor robotRadioDescriptor = new RobotRadioDescriptor();
                 robotRadioDescriptor.setNamePrefixes(new String[]{"BB-"});
